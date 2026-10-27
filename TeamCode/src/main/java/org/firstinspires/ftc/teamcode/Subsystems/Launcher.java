@@ -28,11 +28,11 @@ public class Launcher {
         launcherMotor = hardwareMap.get(DcMotorEx.class,"launcher");
     }
 
-    public double neededVelocity(Pose p) {
+    public double neededVelocity(Follower follower) {
         return 4000.0; //temporary
     }
 
     public void startLauncher(){
-        launcherMotor.setVelocity(neededVelocity(follower.pose()));
+        launcherMotor.setVelocity(neededVelocity(follower));
     }
 }
