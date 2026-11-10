@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.math.Pose;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
@@ -26,13 +28,34 @@ public class Launcher {
         this.telemetry = telemetry;
         this.follower = follower;
         launcherMotor = hardwareMap.get(DcMotorEx.class,"launcher");
+        pidfCoefficients = new PIDFCoefficients(0,0,0,0);
+        launcherMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,pidfCoefficients);
     }
 
-    public double neededVelocity(Follower follower) {
-        return 4000.0; //temporary
+    public double neededVelocity() {
+        return 1000.0; //temporary
     }
+
+    public void setDirection(DcMotorSimple.Direction direction){
+        launcherMotor.setDirection(direction);
+    }
+
+    public void setPIDFCoefficients(PIDFCoefficients pidfCoefficients){
+        this.pidfCoefficients = pidfCoefficients;
+    }
+    public void updatePIDFCoefficients(){
+        setPIDFCoefficients(pidfCoefficients);
+    }
+
+    public DcMotorEx getMotor(){ return launcherMotor; }
+
+    public PIDFCoefficients getPidfCoefficients(){ return pidfCoefficients; }
 
     public void startLauncher(){
-        launcherMotor.setVelocity(neededVelocity(follower));
+        launcherMotor.setVelocity(neededVelocity());
+    }
+    public void stopLauncher(){ launcherMotor.setPower(0);}
+    public void startLauncher(double velocity){
+        launcherMotor.setVelocity(velocity);
     }
 }
